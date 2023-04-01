@@ -1,0 +1,8 @@
+version: '3.9'
+services:
+  redis:
+    image: 'redislabs/redismod:preview'
+    ports:
+      - '6379:6379'
+    volumes:
+      - ./data:/data
