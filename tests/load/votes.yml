@@ -1,6 +1,18 @@
 config:
   target: "http://localhost:3000/api"
   phases:
-    - duration: 60 # virtual users will be generated for 60 seconds
+    - duration: 10 # virtual users will be generated for 10 seconds
       arrivalRate: 1000 # 1000 virtual users sent to the endpoints per second
+  payload:
+    path: "contestants.csv"
+    fields:
+      - "contestantId"
 
+scenarios:
+  - name: "Register a vote"
+    flow:
+      - post:
+          url: "/vote"
+          json:
+            roundNumber: 1
+            contestantId: "{{ contestantId }}"
