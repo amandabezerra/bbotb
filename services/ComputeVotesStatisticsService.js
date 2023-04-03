@@ -16,6 +16,9 @@ export async function getStatistics(roundNumber) {
 
 async function getTotalPerHour(total, roundNumber) {
   const round = await readRoundByNumber(roundNumber);
+  if (!round) {
+    return 0;
+  }
   const roundCreated = new Date(round.timestamp);
   const now = new Date();
   const hours = calculateHourDifference(roundCreated, now);

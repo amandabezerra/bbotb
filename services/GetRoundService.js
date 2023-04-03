@@ -2,7 +2,7 @@ import { readRoundByNumberWithParticipants } from '@/lib/redis';
 
 export async function getRound(roundNumber) {
   const rawRound = await readRoundByNumberWithParticipants(roundNumber);
-  const round = format(rawRound);
+  const round = rawRound && format(rawRound);
   return round;
 }
 
