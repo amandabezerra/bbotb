@@ -5,15 +5,26 @@ import Heading from '@/components/Heading';
 import Text from '@/components/Text';
 import Button from '@/components/Button';
 import Avatar from '@/components/Avatar';
+import { getRound } from '@/services/GetRoundService';
+import { getStatistics } from '@/services/ComputeVotesStatisticsService';
 
 import styles from './styles.module.css';
-import contestant1 from '@/public/images/contestant1.png';
-import contestant2 from '@/public/images/contestant2.png';
-import contestant3 from '@/public/images/contestant3.png';
+import contestantImg1 from '@/public/images/contestant1.png';
+import contestantImg2 from '@/public/images/contestant2.png';
+import contestantImg3 from '@/public/images/contestant3.png';
 
-export default function Home({ roundNumber, options }) {
+export default function Home({ errorFindingData, roundNumber, options }) {
   const [selected, setSelected] = useState(null);
   const [voteFinished, setVoteFinished] = useState(false);
+
+  if (errorFindingData) {
+    return (
+      <>
+        <Text>Ops, ainda estamos trabalhando na criação do round.</Text>
+        <Text>Que tal voltar mais tarde?</Text>
+      </>
+    );
+  }
 
   return (
     <>
@@ -91,30 +102,27 @@ export default function Home({ roundNumber, options }) {
 }
 
 export async function getStaticProps() {
-  const roundNumber = 2;
-  const options = [
-    {
-      id: 1,
-      name: 'Gumball',
-      src: contestant1,
+  const images = [contestantImg1, contestantImg2, contestantImg3];
+  const roundNumber = 1;
+  const round = await getRound(roundNumber);
+
+  if (!round) {
+    return { props: { errorFindingData: true } }
+  }
+
+  const statistics = await getStatistics(roundNumber);
+  const totalVotes = statistics.total;
+  const totalPerContestant = statistics.totalPerContestant;
+
+  const options = round
+    .contestants
+    .map(({ id, name }, index) => ({
+      id,
+      name,
+      src: images[index],
       selected: false,
-      percentage: 10,
-    },
-    {
-      id: 2,
-      name: 'Amethyst',
-      src: contestant2,
-      selected: false,
-      percentage: 85,
-    },
-    {
-      id: 3,
-      name: 'Marceline',
-      src: contestant3,
-      selected: true,
-      percentage: 5,
-    },
-  ];
+      percentage: ((totalPerContestant[id] / totalVotes) * 100) || 0,
+    }));
 
   return {
     props: {
