@@ -1,4 +1,3 @@
-import { searchCars } from '@/lib/redis';
 import { getStatistics } from '@/services/ComputeVotesStatisticsService';
 
 export default async function handler(req, res) {

@@ -1,0 +1,86 @@
+.container {
+  padding-top: 40px;
+  height: 100vh;
+  
+  display: grid; 
+  grid-template-columns: repeat(6, 1fr); 
+  grid-template-rows: 1.2fr 0.7fr 1.1fr 1fr; 
+  gap: 10px 0px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    ". . round-number round-number . ."
+    ". message message message message ."
+    ". voting-card voting-card voting-card voting-card ."
+    ". . button button . .";
+}
+
+@media (max-width: 500px) {
+  .container {
+    display: grid; 
+    grid-template-columns: 1fr; 
+    grid-template-rows: repeat(12, 1fr); 
+    gap: 18px 0px;
+    grid-template-areas: 
+      "round-number"
+      "message"
+      "voting-card"
+      "."
+      "."
+      "."
+      "."
+      "."
+      "."
+      "."
+      "."
+      "button"; 
+  }
+}
+
+.roundContainer {
+  grid-area: round-number;
+}
+
+.logoContainer {
+  margin-top: -30px;
+}
+
+.messageContainer {
+  grid-area: message;
+}
+
+.votingCardContainer {
+  grid-area: voting-card;
+  display: flex;
+  justify-content: center;
+}
+
+.avatarContainer {
+  width: 781px;
+  height: 245px;
+
+  display: flex;
+  justify-content: space-between;
+}
+
+@media (max-width: 500px) {
+  .avatarContainer {
+    width: 245px;
+    height: 781px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10%;
+  }
+}
+
+.buttonContainer {
+  grid-area: button;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.redColor {
+  color: #EC3030;
+}
